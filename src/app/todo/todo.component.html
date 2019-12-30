@@ -1,19 +1,24 @@
 <h1>{{title}}</h1>
-
-<input type="text" id="text" name="textval" value="{{newTodo}}" (change)="onTextChange($event)">
-<button (click)="add()">Add</button>
-<table>
+<form [formGroup]="todoForm" (ngSubmit)="add()">
+    <input formControlName="name" name="todo" type="text" required>
+    <input formControlName="desc" name="tododesc" type="text">
+    <button type="submit">Add</button>
+ </form>
+    <table>
     <thead>
         <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Description</th>
         <th>Delete</th>
         </tr>
     </thead>
     <tbody>
+        <tr *ngIf="todos.length==0">No  todos..</tr>
         <tr *ngFor="let todo of todos; let i=index">
             <td>{{i}}</td>
-            <td>{{todo}}</td>
+            <td>{{todo.name}}</td>
+            <td>{{todo.desc}}</td>
             <td (click)="delete(todo)">Delete</td>
             
         </tr>

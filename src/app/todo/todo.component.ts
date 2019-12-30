@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-todo',
@@ -7,24 +8,44 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TodoComponent implements OnInit {
 title="Todo";
-todos=["todo1","todo2","todo3"];
+todos=[
+  {name:"todo1", desc:"desc1"},
+  {name:"todo2",desc:"desc2"},
+  {name:"todo3",desc:"desc3"}
+];
 newTodo="";
-  constructor() { }
+todoForm;
+  constructor(private fb:FormBuilder) {//injection
+    this.todoForm=fb.group({
+      name :'',
+      desc : ''
+    })
+    
+   }
 
   ngOnInit() {
   }
 delete(todo)
 {
-  alert(todo);
+  alert(todo.name);
   this.todos=this.todos.filter(function (t){
   
     return t!=todo;
   })
 }
 add(){
- // alert(this.newTodo);
-  this.todos.push(this.newTodo);
-  this.newTodo=" ";
+  if(!this.todoForm.valid){
+   alert("enter all required fields");
+   return;
+
+  }
+  this.todos.push({
+    name:this.todoForm.value.name,
+    desc:this.todoForm.value.desc
+  
+  });
+  this.todoForm.reset;
+  //this.newTodo=" ";
 }
 onTextChange(event){
   //alert(event.target.value);
